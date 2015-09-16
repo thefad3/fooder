@@ -1,0 +1,44 @@
+<div ng-controller="MainCtrl">
+    <div ng-hide="authData.uid">
+      <h3>Sign Up!</h3>
+      <p>
+        <label>Email</label>
+        <input type="email" ng-model="register.email" required>
+        </p>
+
+        <p>
+          <label>Password</label>
+          <input type="password" ng-model="register.password" required>
+        </p>
+
+        <p>
+          <button type="button" ng-click="signup()">Sign Up</button>
+        </p>
+    </div>
+
+
+  <div ng-hide="authData.uid">
+    <h3>Login!</h3>
+    <p>
+      <label>Email</label>
+      <input type="email" ng-model="login.email" required>
+    </p>
+
+    <p>
+      <label>Password</label>
+      <input type="password" ng-model="login.password" required>
+    </p>
+
+    <p>
+      <button type="button" ng-click="login()">Sign Up</button>
+    </p>
+  </div>
+
+  <div ng-show="authData.uid">
+    <h3>Welcome back {{authData.password.email}}</h3>
+
+  </div>
+
+
+
+</div>
