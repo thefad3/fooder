@@ -38,18 +38,23 @@ angular.module('fooderApp')
 
     NoGPS.getLocation(callBack);
 
+    $scope.loadingFalse=1;
+    $scope.businesses=1;
+
     $scope.search = function() {
-          $scope.businesses = '';
+      $scope.loading=1;
+      $scope.businesses='';
 
           var _search = {
             location: $scope.locationData,
             term: $scope.term
           };
           Yelp.yelpSearch(_search, function (data) {
-            $scope.businesses = data.businesses;
-          });
-    }
+              $scope.businesses = data.businesses;
+            console.log($scope.businesses);
 
+          });
+    };
   })
   .factory("Yelp", function($http) {
     return {

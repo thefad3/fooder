@@ -34,20 +34,26 @@
     </p>
   </div>
   <div ng-show="authData.uid">
-    <div class="col-md-12">
-    <h3>Welcome back {{authData.password.email}}</h3>
-
-      term: <input type="text" ng-model="term">
-      <button type="button" ng-click="search()">Find Stuff</button>
+      <div class="row">
+        <div class="col-md-12">
+        <h3>Welcome back {{authData.password.email}}</h3>
+          <div class="input-group">
+            <span class="input-group-addon" id="sizing-addon1">Search:</span>
+            <input type="text" class="form-control" aria-describedby="sizing-addon1" ng-model="term" required>
+            <span class="input-group-btn">
+            <button class="btn btn-default" ng-click="search()" type="button">Find!</button>
+          </span>
+          </div>
+         </div>
       </div>
-    <div class="col-md-4">Like</div>
-    <div class="col-md-4">
-      <div ng-repeat="x in businesses" data-drop="true" data-drag="true" ng-model="businesses" jqyoui-droppable="{index: {{$index}}}" jqyoui-draggable="{index: {{$index}}, insertInline: true, direction:'jqyouiDirection'}" data-jqyoui-options="{revert: 'invalid'}" data-direction="{{x.jqyouiDirection}}">
+
+    <div class="row">
+      <div ng-show="loading" ng-hide="loadingFalse && businesses"><h4>Loading...</h4></div>
+      <div class="col-md-4" ng-repeat="x in businesses" data-drop="true" data-drag="true" ng-model="businesses" jqyoui-droppable="{index: {{$index}}}" jqyoui-draggable="{index: {{$index}}, insertInline: true, direction:'jqyouiDirection'}" data-jqyoui-options="{revert: 'invalid'}" data-direction="{{x.jqyouiDirection}}">
         <img src="{{x.image_url}}">
         {{x.name}}
         {{x.display_phone}}
       </div>
     </div>
-    <div class="col-md-4">Dislike</div>
   </div>
 </div>
