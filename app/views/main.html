@@ -1,5 +1,4 @@
 <div ng-controller="MainCtrl">
-
   <div ng-hide="authData.uid">
       <h3>Sign Up!</h3>
       <p>
@@ -16,8 +15,6 @@
           <button type="button" ng-click="signup()">Sign Up</button>
         </p>
     </div>
-
-
   <div ng-hide="authData.uid">
     <h3>Login!</h3>
     <p>
@@ -34,11 +31,7 @@
       <button type="button" ng-click="login()">Sign Up</button>
     </p>
   </div>
-
   <div ng-show="authData.uid">
-
-
-
     <div class="col-md-12">
     <h3>Welcome back {{authData.password.email}}</h3>
       location: <input type="text" ng-model="location">
@@ -52,17 +45,7 @@
         {{x.name}}
         {{x.display_phone}}
       </div>
-
-
-
     </div>
     <div class="col-md-4">Dislike</div>
-
-
-
-
   </div>
-
-
-
 </div>

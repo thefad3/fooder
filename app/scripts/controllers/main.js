@@ -9,19 +9,14 @@ function randomString(length, chars) {
 angular.module('fooderApp')
   .controller('MainCtrl', function ($scope, Auth, $http, Yelp) {
 
-
       $scope.signup = function(){
-
         Auth.$createUser({
           email: $scope.register.email,
           password: $scope.register.password
         }).then(function(userData) {
-
           console.log("User " + userData.uid + " created successfully!");
         })
-
       };
-
 
     $scope.login = function(){
       Auth.$authWithPassword({
@@ -36,18 +31,16 @@ angular.module('fooderApp')
       });
     };
 
-
     $scope.search = function() {
+      $scope.businesses='';
       var _search = {
         location: $scope.location,
         term: $scope.term
       };
       Yelp.yelpSearch(_search, function (data) {
         $scope.businesses = data.businesses;
-        console.log(data);
       });
     }
-
 
   })
 
