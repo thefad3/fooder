@@ -10,7 +10,7 @@
  */
 angular.module('fooderApp', [
     'ngRoute',
-  'ngDragDrop',
+  'ngTouch',
   'firebase',
     'firebase.ref',
     'firebase.auth'

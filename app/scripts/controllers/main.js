@@ -41,6 +41,15 @@ angular.module('fooderApp')
     $scope.loadingFalse=1;
     $scope.businesses=1;
 
+    $scope.like = function(index){
+
+      console.log('Like.', index);
+    };
+    $scope.dislike = function(index){
+
+      console.log('Dislike.', index);
+    };
+
     $scope.search = function() {
       $scope.loading=1;
       $scope.businesses='';
