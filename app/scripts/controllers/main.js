@@ -31,19 +31,26 @@ angular.module('fooderApp')
       });
     };
 
+
+    var callBack = function (location) {
+        $scope.locationData = location.city + ',' + location.region;
+    };
+
+    NoGPS.getLocation(callBack);
+
     $scope.search = function() {
-      $scope.businesses='';
-      var _search = {
-        location: $scope.location,
-        term: $scope.term
-      };
-      Yelp.yelpSearch(_search, function (data) {
-        $scope.businesses = data.businesses;
-      });
+          $scope.businesses = '';
+
+          var _search = {
+            location: $scope.locationData,
+            term: $scope.term
+          };
+          Yelp.yelpSearch(_search, function (data) {
+            $scope.businesses = data.businesses;
+          });
     }
 
   })
-
   .factory("Yelp", function($http) {
     return {
       "yelpSearch": function(name, callback) {
