@@ -1,5 +1,6 @@
 <div ng-controller="MainCtrl">
-    <div ng-hide="authData.uid">
+
+  <div ng-hide="authData.uid">
       <h3>Sign Up!</h3>
       <p>
         <label>Email</label>
@@ -35,12 +36,22 @@
   </div>
 
   <div ng-show="authData.uid">
+
+
+
     <div class="col-md-12">
     <h3>Welcome back {{authData.password.email}}</h3>
+      location: <input type="text" ng-model="location">
+      term: <input type="text" ng-model="term">
+      <button type="button" ng-click="search()">Find Stuff</button>
       </div>
     <div class="col-md-4">Like</div>
     <div class="col-md-4">
-
+      <div ng-repeat="x in businesses">
+        <img src="{{x.image_url}}">
+        {{x.name}}
+        {{x.display_phone}}
+      </div>
 
 
 

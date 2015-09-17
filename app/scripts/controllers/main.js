@@ -37,11 +37,16 @@ angular.module('fooderApp')
     };
 
 
-    Yelp.yelpSearch('', function(data) {
-      //$scope.businesses = data.businesses;
-      console.log(data);
-    });
-
+    $scope.search = function() {
+      var _search = {
+        location: $scope.location,
+        term: $scope.term
+      };
+      Yelp.yelpSearch(_search, function (data) {
+        $scope.businesses = data.businesses;
+        console.log(data);
+      });
+    }
 
 
   })
@@ -53,13 +58,13 @@ angular.module('fooderApp')
         url = 'http://api.yelp.com/v2/search/',
         params = {
           callback: 'angular.callbacks._0',
-          location: 'San+Francisco',
+          location: name.location,
           oauth_consumer_key: '44dGAgblwMC4eiapEgv2Eg',
           oauth_token: 'a85eWTlMIhs34Ehs-z9ZmPxrbrVPAMnv',
           oauth_signature_method: "HMAC-SHA1",
           oauth_timestamp: new Date().getTime(),
           oauth_nonce: randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),
-          term: 'food'
+          term: name.term
           },
         consumerSecret = '7cLJ2tyXnPmdvWDakkcyRTs4qYY',
         tokenSecret = '9qxs-Xd-d11WrjGd_96yQB-raQY',
