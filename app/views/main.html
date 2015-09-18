@@ -47,16 +47,19 @@
          </div>
       </div>
 
+    <p></p>
+
     <div class="row">
       <div ng-show="loading" ng-hide="loadingFalse && businesses"><h4>Loading...</h4></div>
-      <!-- <div class="col-md-4" ng-repeat="x in businesses" data-drop="true" data-drag="true" ng-model="businesses" jqyoui-droppable="{index: {{$index}}}" jqyoui-draggable="{index: {{$index}}, insertInline: true, direction:'jqyouiDirection'}" data-jqyoui-options="{revert: 'invalid'}" data-direction="{{x.jqyouiDirection}}"> -->
-      <div class="col-md-4" ng-repeat="x in businesses track by $index">
-      <div ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
-        <img src="{{x.image_url}}">
+      <div class="col-md-4"></div>
+      <div ng-repeat="x in businesses track by $index">
+      <div class="col-md-4" ng-if="business_index == $index" ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
+        <img width="100%"  src="{{x.image_url}}">
         {{x.name}}
         {{x.display_phone}}
         </div>
       </div>
+      <div class="col-md-4"></div>
     </div>
   </div>
 </div>

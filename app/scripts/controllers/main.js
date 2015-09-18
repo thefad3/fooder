@@ -9,6 +9,10 @@ function randomString(length, chars) {
 angular.module('fooderApp')
   .controller('MainCtrl', function ($scope, Auth, $http, Yelp) {
 
+    $scope.loadingFalse=1;
+    $scope.businesses=1;
+    $scope.business_index=0;
+
       $scope.signup = function(){
         Auth.$createUser({
           email: $scope.register.email,
@@ -38,16 +42,30 @@ angular.module('fooderApp')
 
     NoGPS.getLocation(callBack);
 
-    $scope.loadingFalse=1;
-    $scope.businesses=1;
-
     $scope.like = function(index){
 
+
+      $scope.next();
       console.log('Like.', index);
     };
     $scope.dislike = function(index){
 
+      $scope.next();
       console.log('Dislike.', index);
+    };
+
+
+    $scope.next = function(){
+      if($scope.business_index >= $scope.businesses.length -1){
+        $scope.business_index =0;
+      }else{
+
+        $scope.business_index ++;
+      }
+    };
+
+    $scope.choose = function(payload){
+
     };
 
     $scope.search = function() {
