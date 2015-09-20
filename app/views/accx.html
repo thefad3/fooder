@@ -1,0 +1,74 @@
+<div ng-controller="authPage">
+
+
+  <nav class="navbar navbar-inverse">
+    <ul class="nav navbar-nav">
+      <li><a href="/#/">Home</a></li>
+      <li><a href="/#/">Logout</a></li>
+    </ul>
+    <div class="navbar-form navbar-right" ng-show="authData.uid">
+      <div class="input-group paddingRight">
+        <span class="input-group-addon" id="sizing-addon1">Search:</span>
+        <input type="text" class="form-control" aria-describedby="sizing-addon1" ng-model="term" required>
+            <span class="input-group-btn">
+            <button class="btn btn-primary" ng-click="search()" type="button">Find!</button>
+          </span>
+      </div>
+    </div>
+  </nav>
+
+
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Welcome back {{authData.password.email}}</h3>
+        <button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
+
+      </div>
+    </div>
+    <p></p>
+    <div class="row" ng-repeat="x in viewData track by $index" >
+
+      <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+          <h3 class="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body">
+          <ul>
+            <li>
+              <a href="#">{{ x.uid }}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+          <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+      </script>
+
+      <div ng-show="loading" ng-hide="loadingFalse && viewData"><h4>Loading...</h4></div>
+      <div class="col-md-4" ng-if="business_index == $index">
+        <button type="button" ng-click="like($index)" class="btn btn-primary btn-lg btn-block">Like</button>
+        <button type="button" ng-click="dislike($index)" class="btn btn-default btn-lg btn-block">Dislike</button>
+      </div>
+      <div>
+        <div class="col-md-4 border" ng-click="open($index)" ng-if="business_index == $index" ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
+            <span>
+              <h4 id="name">{{x.name}}</h4>
+              <img src="{{x.rating_img_url}}">
+              <h4>{{x.display_phone}}</h4>
+            </span>
+          <div id="yelpImage" style="background-image: url({{x.image_url}});">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" ng-if="business_index == $index"></div>
+    </div>
+  </div>
+
+
+
+
+
+
+</div>

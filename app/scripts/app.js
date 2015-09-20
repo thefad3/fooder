@@ -11,6 +11,7 @@
 angular.module('fooderApp', [
     'ngRoute',
   'ngTouch',
+  'ui.bootstrap',
   'firebase',
     'firebase.ref',
     'firebase.auth'

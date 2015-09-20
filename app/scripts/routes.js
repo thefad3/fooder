@@ -62,8 +62,8 @@ angular.module('fooderApp')
         controller: 'MainCtrl'
       })
       .whenAuthenticated('/account', {
-        templateUrl: 'views/account.html',
-        controller: 'AccountCtrl'
+        templateUrl: 'views/accx.html',
+        controller: 'authPage'
       })
       .otherwise({redirectTo: '/'});
   }])
