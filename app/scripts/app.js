@@ -11,8 +11,8 @@
 angular.module('fooderApp', [
     'ngRoute',
   'ngTouch',
-  'ui.bootstrap',
   'firebase',
+  'uiGmapgoogle-maps',
     'firebase.ref',
     'firebase.auth'
 ]);

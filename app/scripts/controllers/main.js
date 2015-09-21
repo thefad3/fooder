@@ -7,11 +7,8 @@ function randomString(length, chars) {
 }
 
 angular.module('fooderApp')
-  .controller('authPage', function($scope, $modal, Auth, $http, Ref, $firebaseObject, $location){
-
-
-
-
+  .controller('authPage', function($scope,$firebaseArray, Auth, $http, Ref, $firebaseObject, $timeout, $location){
+    $scope.animationsEnabled = false;
     $scope.loadingFalse=1;
     $scope.businesses=1;
     $scope.business_index=0;
@@ -27,11 +24,32 @@ angular.module('fooderApp')
 
     var callBack = function (location) {
       $scope.locationData = location.city + ',' + location.region;
-
+      console.log(location);
       $scope.loadSearch = {
         location: location.city + ',' + location.region,
         term: 'food'
       };
+
+      $scope.map = {center: {latitude: location.latitude, longitude: location.longitude }, zoom: 6 };
+      $scope.options = {scrollwheel: false};
+      $scope.coordsUpdates = 0;
+      $scope.dynamicMoveCtr = 0;
+      $scope.marker = {
+        coords: {
+          latitude: location.latitude,
+          longitude: location.longitude
+        },
+        options: { draggable: false }
+        };
+
+
+      $scope.showPosition = function(position) {
+        var latlon = position.latitude + "," + position.longitude;
+        var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
+          +latlon+"&zoom=14&size=900x350&sensor=false&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C"+latlon;
+        document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
+      };
+
 
       $scope.searchFunction = function (name) {
         var method = 'GET',
@@ -57,7 +75,6 @@ angular.module('fooderApp')
             console.log(data);
         });
       };
-
       $scope.searchFunction($scope.loadSearch);
     };
 
@@ -65,12 +82,18 @@ angular.module('fooderApp')
 
 
 
-    $scope.open = function (size) {
+    $scope.comment = function(x, a){
 
-      var modalInstance = $modal.open({
-        animation: false,
-        templateUrl: '../../views/myModalContent.html'
+      var fb = new Firebase('https://coderr.firebaseio.com/' + x.id);
+
+      var arry = $firebaseArray(fb);
+      console.log(arry);
+      arry.$add({ comments: a, pid: _authDataReturned.uid }).then(function(data){
+
+          console.log('Success, posted!');
+
       });
+
     };
 
 
@@ -140,6 +163,13 @@ angular.module('fooderApp')
 
 
     };
+
+
+
+
+
+
+
 
   })
 

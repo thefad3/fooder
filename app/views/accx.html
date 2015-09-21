@@ -17,42 +17,80 @@
     </div>
   </nav>
 
-
-  <div>
-    <div class="row">
-      <div class="col-md-12">
-        <h3>Welcome back {{authData.password.email}}</h3>
-        <button type="button" class="btn btn-default" ng-click="open()">Open me!</button>
-
-      </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Welcome back {{authData.password.email}}</h3>
     </div>
+  </div>
+  <div class="content">
     <p></p>
-    <div class="row" ng-repeat="x in viewData track by $index" >
+    <div class="row" ng-repeat="x in viewData track by $index" ng-if="business_index == $index">
+      <div class="modal fade modalFont" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h3 class="modal-title">{{x.name}}</h3>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col-md-4">
+                    <address>
+                      <strong>{{x.name}}</strong><br>
+                      {{x.location.display_address[0]}}<br>
+                      {{x.location.display_address[2]}}<br>
+                      <h4><abbr title="Phone">P:</abbr> {{x.display_phone}}</h4>
+                    </address>
+                    <img src="{{x.rating_img_url_large}}">
+                    </div>
+                  <div class="col-md-8">
+                    <blockquote>
+                        <h5>Recent Review:</h5>
+                        " {{x.snippet_text}} "
+                      </blockquote>
+                  </div>
+                </div>
+              <div class="row">
+                  <div class="col-md-12">
+                  <p><div id="mapholder" class="img-thumbnail"></div></p>
+                  </div>
+              </div>
 
-      <script type="text/ng-template" id="myModalContent.html">
-        <div class="modal-header">
-          <h3 class="modal-title">I'm a modal!</h3>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>Categories</h3>
+                  <h5>{{x.categories[0][0]}} ,  {{x.categories[1][0]}} ,  {{x.categories[2][0]}} </h5>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>Write Review</h3>
+                  <textarea class="form-control" ng-model="reviewComments" rows="2"></textarea>
+                  <p><button type="button" ng-click="comment(x, reviewComments)" class="btn btn-primary">Save changes</button></p>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
         </div>
-        <div class="modal-body">
-          <ul>
-            <li>
-              <a href="#">{{ x.uid }}</a>
-            </li>
-          </ul>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-          <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-        </div>
-      </script>
+      </div>
 
       <div ng-show="loading" ng-hide="loadingFalse && viewData"><h4>Loading...</h4></div>
-      <div class="col-md-4" ng-if="business_index == $index">
+      <div class="col-md-4">
         <button type="button" ng-click="like($index)" class="btn btn-primary btn-lg btn-block">Like</button>
         <button type="button" ng-click="dislike($index)" class="btn btn-default btn-lg btn-block">Dislike</button>
       </div>
       <div>
-        <div class="col-md-4 border" ng-click="open($index)" ng-if="business_index == $index" ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
+        <div class="col-md-4 border"data-toggle="modal" data-target="#myModal" ng-click="showPosition(x.location.coordinate)"  ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
             <span>
               <h4 id="name">{{x.name}}</h4>
               <img src="{{x.rating_img_url}}">
