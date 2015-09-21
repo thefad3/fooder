@@ -83,14 +83,12 @@
           </div>
         </div>
       </div>
-
-      <div ng-show="loading" ng-hide="loadingFalse && viewData"><h4>Loading...</h4></div>
       <div class="col-md-4">
         <button type="button" ng-click="like($index)" class="btn btn-primary btn-lg btn-block">Like</button>
         <button type="button" ng-click="dislike($index)" class="btn btn-default btn-lg btn-block">Dislike</button>
       </div>
       <div>
-        <div class="col-md-4 border"data-toggle="modal" data-target="#myModal" ng-click="showPosition(x.location.coordinate)"  ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
+        <div class="col-md-4 border" data-toggle="modal" data-target="#myModal" ng-click="showPosition(x.location.coordinate)"  ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
             <span>
               <h4 id="name">{{x.name}}</h4>
               <img src="{{x.rating_img_url}}">
@@ -103,10 +101,4 @@
       <div class="col-md-4" ng-if="business_index == $index"></div>
     </div>
   </div>
-
-
-
-
-
-
 </div>
