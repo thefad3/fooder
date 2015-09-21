@@ -1,5 +1,8 @@
 # Fooder
 
+#Check out Current Build!
+
+https://coderr.firebaseapp.com/#/
 
 ## Build & development
 
