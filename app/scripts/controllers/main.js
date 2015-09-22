@@ -24,7 +24,7 @@ angular.module('fooderApp')
       //Location data for when Page loads
       $scope.locationData = location.city + ',' + location.region;
 
-      //Google maps location generator and map ganerator
+      //Google maps location generator and map generator
       $scope.showPosition = function(position) {
         var latlon = position.latitude + "," + position.longitude;
         var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
@@ -53,9 +53,16 @@ angular.module('fooderApp')
     };
 
     $scope.like = function(index){
+      var fb = new Firebase('https://coderr.firebaseio.com/' + _authDataReturned.uid+'/like');
+      var obj = $firebaseObject(fb);
+      fb.push({like:index});
+
       $scope.next();
     };
     $scope.dislike = function(index){
+      var fb = new Firebase('https://coderr.firebaseio.com/' + _authDataReturned.uid+'/dislike');
+      var obj = $firebaseObject(fb);
+      fb.push({like:index});
       $scope.next();
     };
 
@@ -128,8 +135,8 @@ angular.module('fooderApp')
             oauth_timestamp: new Date().getTime(),
             oauth_nonce: randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzA'),
             term: name.term
-          };
-        var consumerSecret = '7cLJ2tyXnPmdvWDakkcyRTs4qYY',
+          },
+         consumerSecret = '7cLJ2tyXnPmdvWDakkcyRTs4qYY',
           tokenSecret = '9qxs-Xd-d11WrjGd_96yQB-raQY',
           signature = oauthSignature.generate(method, url, params, consumerSecret, tokenSecret, {encodeSignature: false});
         params['oauth_signature'] = signature;

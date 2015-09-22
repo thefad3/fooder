@@ -11,7 +11,7 @@
         <span class="input-group-addon" id="sizing-addon1">Search:</span>
         <input type="text" class="form-control" aria-describedby="sizing-addon1" ng-model="term" required>
             <span class="input-group-btn">
-            <button class="btn btn-primary" ng-click="search()" type="button">Find!</button>
+            <button class="btn btn-success" ng-click="search()" type="button">Find!</button>
           </span>
       </div>
     </div>
@@ -83,12 +83,14 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <button type="button" ng-click="like($index)" class="btn btn-primary btn-lg btn-block">Like</button>
-        <button type="button" ng-click="dislike($index)" class="btn btn-default btn-lg btn-block">Dislike</button>
+      <div class="col-md-3 ">
+        <h3>Like</h3>
+        <hr>
+        <p></p>
+        <button type="button" ng-click="like(x.id)" class="img-thumbnail ld"><i class="glyphicon glyphicon-thumbs-up"></i></button>
       </div>
       <div>
-        <div class="col-md-4 border" data-toggle="modal" data-target="#myModal" ng-click="showPosition(x.location.coordinate)"  ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
+        <div class="col-md-6 border" data-toggle="modal" data-target="#myModal" ng-click="showPosition(x.location.coordinate)"  ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
             <span>
               <h4 id="name">{{x.name}}</h4>
               <img src="{{x.rating_img_url}}">
@@ -98,7 +100,12 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4" ng-if="business_index == $index"></div>
+      <div class="col-md-3">
+        <h3>Dislike</h3>
+        <hr>
+        <p></p>
+        <button type="button" ng-click="dislike(x.id)" class="img-thumbnail ld"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+      </div>
     </div>
   </div>
 </div>
