@@ -1,10 +1,8 @@
 <div ng-controller="authPage">
 
-
   <nav class="navbar navbar-inverse">
     <ul class="nav navbar-nav">
-      <li><a href="/#/">Home</a></li>
-      <li><a href="/#/">Logout</a></li>
+      <li><a href="#">foodeR</a></li>
     </ul>
     <div class="navbar-form navbar-right" ng-show="authData.uid">
       <div class="input-group paddingRight">
@@ -18,20 +16,31 @@
   </nav>
 
   <div class="row">
-    <div class="col-md-12">
-      <h3>Welcome back {{authData.password.email}}</h3>
+    <div class="col-md-8">
+      <h3>Welcome back {{authData.password.email}}  <small><a href="#">Logout</a> </small></h3>
+    </div>
+    <div class="col-md-4">
+      <h3 class="text-right">Total Swipes: {{userCount}}</h3>
     </div>
   </div>
+
+
   <div class="content">
     <p></p>
+
     <div class="row" ng-repeat="x in viewData track by $index" ng-if="business_index == $index">
       <div class="modal fade modalFont" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        {{id[$index] === x.id}}
         <div class="modal-dialog" role="document">
+
           <div class="modal-content">
+
+
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h3 class="modal-title">{{x.name}}</h3>
             </div>
+
             <div class="modal-body">
               <div class="row">
                   <div class="col-md-4">
@@ -63,49 +72,46 @@
                 </div>
               </div>
 
-              <div class="row">
-                <div class="col-md-12">
-
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12">
-                  <h3>Write Review</h3>
-                  <textarea class="form-control" ng-model="reviewComments" rows="2"></textarea>
-                  <p><button type="button" ng-click="comment(x, reviewComments)" class="btn btn-primary">Save changes</button></p>
-                </div>
-              </div>
             </div>
+
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
+
           </div>
+
         </div>
       </div>
-      <div class="col-md-3 ">
-        <h3>Like</h3>
-        <hr>
-        <p></p>
-        <button type="button" ng-click="like(x.id)" class="img-thumbnail ld"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-      </div>
-      <div>
-        <div class="col-md-6 border" data-toggle="modal" data-target="#myModal" ng-click="showPosition(x.location.coordinate)"  ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
-            <span>
+        <div class="col-md-6">
+              <blockquote>
+                <h5>Recent User Review:</h5>
+                " {{latestComment.comments}} "
+                {{latestComment}}
+              </blockquote>
+
+
+
+              <label>Write Review:</label>
+              <p><textarea class="form-control" ng-model="reviewComments" rows="2"></textarea></p>
+
+              <p><button type="button" ng-click="comment(x, reviewComments)" class="btn btn-success">Save changes</button></p>
+          </div>
+
+        <div class="col-md-6 border"  ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
+          <span>
+            <div class="col-md-8">
               <h4 id="name">{{x.name}}</h4>
               <img src="{{x.rating_img_url}}">
               <h4>{{x.display_phone}}</h4>
-            </span>
-          <div id="yelpImage" style="background-image: url({{x.image_url}});">
-          </div>
+            </div>
+            <div class="col-md-4">
+              <button type="button" ng-click="like(x.id)" class="img-thumbnail ld1"><i class="glyphicon glyphicon-thumbs-up"></i></button>
+              <button type="button" ng-click="dislike(x.id)" class="img-thumbnail ld2"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+            </div>
+          </span>
+          <div id="yelpImage" data-toggle="modal" data-target="#myModal" ng-click="showPosition(x.location.coordinate)" style="background-image: url({{x.image_url}});"></div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <h3>Dislike</h3>
-        <hr>
-        <p></p>
-        <button type="button" ng-click="dislike(x.id)" class="img-thumbnail ld"><i class="glyphicon glyphicon-thumbs-down"></i></button>
-      </div>
-    </div>
-  </div>
+
+
+</div>
 </div>

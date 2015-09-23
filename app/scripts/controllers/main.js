@@ -8,12 +8,35 @@ function randomString(length, chars) {
 }
 angular.module('fooderApp')
   .controller('authPage', function($scope,$firebaseArray, Auth, $http, Ref, $firebaseObject, $timeout, $location, Yelp){
-    $scope.callbBackId=0;
-    $scope.business_index=0;
-    var _authDataReturned = Auth.$getAuth();
-    var fb = new Firebase('https://coderr.firebaseio.com/' + _authDataReturned.uid);
-    var obj = $firebaseObject(fb);
 
+    $scope.callbBackId=0;
+    $scope.userCount=0;
+    $scope.id=[];
+
+    var _authDataReturned = Auth.$getAuth();
+    var fb = new Firebase('https://coderr.firebaseio.com/users/' + _authDataReturned.uid);
+    var obj = $firebaseObject(fb);
+    var comment = $firebaseObject(Ref);
+
+
+
+    fb.on("value", function(snapshot) {
+      $scope.newPost = snapshot.val();
+      if(!$scope.newPost['count']){
+        $scope.newPost['count']=['0'];
+      }
+      if($scope.newPost['count'].length < $scope.userCount) {
+        $scope.userCount=0;
+      }else{
+        $scope.userCount = $scope.newPost['count'].length-1;
+      }
+      angular.forEach($scope.newPost.like, function(key, value){
+        $scope.id.push(key);
+      })
+    });
+
+    $scope.business_index=0;
+    $scope.dbRead = $firebaseObject(Ref);
     $scope.authData = obj;
 
     if(_authDataReturned.length > 1){
@@ -23,7 +46,6 @@ angular.module('fooderApp')
     var callBack = function (location) {
       //Location data for when Page loads
       $scope.locationData = location.city + ',' + location.region;
-
       //Google maps location generator and map generator
       $scope.showPosition = function(position) {
         var latlon = position.latitude + "," + position.longitude;
@@ -31,7 +53,6 @@ angular.module('fooderApp')
           +latlon+"&zoom=14&size=900x350&sensor=false&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C"+latlon;
         document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
       };
-
       var _searchLoad = {
         location: $scope.locationData,
         term: 'food',
@@ -39,13 +60,21 @@ angular.module('fooderApp')
       };
       Yelp.yelpSearch(_searchLoad, function(data){
         $scope.viewData = data.businesses;
-      })
+        var chat = new Firebase('https://coderr.firebaseio.com/comments/');
+        chat.on('child_added', function (snapshot) {
+          $scope.latestComment = snapshot.val();
+        });
+      });
     };
+
 
     NoGPS.getLocation(callBack);
 
+
+
+
     $scope.comment = function(x, a){
-      var fb = new Firebase('https://coderr.firebaseio.com/' + x.id);
+      var fb = new Firebase('https://coderr.firebaseio.com/comments/' + x.id);
       var arry = $firebaseArray(fb);
       arry.$add({ comments: a, pid: _authDataReturned.uid }).then(function(data){
           console.log('Success, posted!');
@@ -53,16 +82,20 @@ angular.module('fooderApp')
     };
 
     $scope.like = function(index){
-      var fb = new Firebase('https://coderr.firebaseio.com/' + _authDataReturned.uid+'/like');
-      var obj = $firebaseObject(fb);
-      fb.push({like:index});
-
+      $scope.userCount++;
+      var countKarma = Ref.child("/users/"+_authDataReturned.uid+"/count/"+$scope.userCount);
+      countKarma.set(_authDataReturned.uid);
+      var _like = Ref.child("/users/"+_authDataReturned.uid+"/like/");
+      _like.push(index);
       $scope.next();
     };
+
     $scope.dislike = function(index){
-      var fb = new Firebase('https://coderr.firebaseio.com/' + _authDataReturned.uid+'/dislike');
-      var obj = $firebaseObject(fb);
-      fb.push({like:index});
+      $scope.userCount++;
+      var countKarma = Ref.child("/users/"+_authDataReturned.uid+"/count/"+$scope.userCount);
+      countKarma.set(_authDataReturned.uid);
+      var _dislike = Ref.child("/users/"+_authDataReturned.uid+"/dislike/");
+      _dislike.push(index);
       $scope.next();
     };
 
@@ -98,9 +131,10 @@ angular.module('fooderApp')
           email: $scope.register.email,
           password: $scope.register.password
         }).then(function(userData) {
-
-          var usersRef = Ref.child("/"+userData.uid);
+          var usersRef = Ref.child("/users/"+userData.uid);
           usersRef.set(userData);
+          var countKarmaSet = Ref.child("/users/"+userData.uid+"/count/"+$scope.userCount);
+          countKarmaSet.set(userData.uid);
         })
       };
 
@@ -111,7 +145,7 @@ angular.module('fooderApp')
       }).then(function(authData) {
         $scope.authData = authData;
         $scope.auth = true;
-        var usersRef = Ref.child("/"+authData.uid);
+        var usersRef = Ref.child("/users/"+authData.uid);
         usersRef.set(authData);
         $location.path( "/account");
       }).catch(function(error) {
