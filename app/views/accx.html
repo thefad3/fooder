@@ -2,7 +2,7 @@
 
   <nav class="navbar navbar-inverse">
     <ul class="nav navbar-nav">
-      <li><a href="#">foodeR</a></li>
+      <li><a href="/#/">foodeR</a></li>
     </ul>
     <div class="navbar-form navbar-right" ng-show="authData.uid">
       <div class="input-group paddingRight">
@@ -17,7 +17,7 @@
 
   <div class="row">
     <div class="col-md-8">
-      <h3>Welcome back {{authData.password.email}}  <small><a href="#">Logout</a> </small></h3>
+      <h3>Welcome back {{authData.password.email}}  <small> <a href="/#/" ng-click="logout">Logout</a> </small></h3>
     </div>
     <div class="col-md-4">
       <h3 class="text-right">Total Swipes: {{userCount}}</h3>
@@ -54,7 +54,7 @@
                     </div>
                   <div class="col-md-8">
                     <blockquote>
-                        <h5>Recent Review:</h5>
+                        <h5>Recent Yelp Review:</h5>
                         " {{x.snippet_text}} "
                       </blockquote>
                   </div>
@@ -85,8 +85,9 @@
         <div class="col-md-6">
               <blockquote>
                 <h5>Recent User Review:</h5>
-                " {{latestComment.comments}} "
-                {{latestComment}}
+                <div ng-if="viewData.comments.rId == x.id">
+                " {{viewData.comments.comments}} "
+                  </div>
               </blockquote>
 
 

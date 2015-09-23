@@ -16,7 +16,6 @@ angular.module('fooderApp')
     var _authDataReturned = Auth.$getAuth();
     var fb = new Firebase('https://coderr.firebaseio.com/users/' + _authDataReturned.uid);
     var obj = $firebaseObject(fb);
-    var comment = $firebaseObject(Ref);
 
 
 
@@ -43,6 +42,10 @@ angular.module('fooderApp')
       $location.path('/#/');
     }
 
+    $scope.logout = function(){
+      _authDataReturned.unauth();
+      $location.path('/#/');
+    };
     var callBack = function (location) {
       //Location data for when Page loads
       $scope.locationData = location.city + ',' + location.region;
@@ -62,7 +65,7 @@ angular.module('fooderApp')
         $scope.viewData = data.businesses;
         var chat = new Firebase('https://coderr.firebaseio.com/comments/');
         chat.on('child_added', function (snapshot) {
-          $scope.latestComment = snapshot.val();
+          $scope.viewData.comments = snapshot.val();
         });
       });
     };
@@ -71,12 +74,10 @@ angular.module('fooderApp')
     NoGPS.getLocation(callBack);
 
 
-
-
     $scope.comment = function(x, a){
-      var fb = new Firebase('https://coderr.firebaseio.com/comments/' + x.id);
+      var fb = new Firebase('https://coderr.firebaseio.com/comments/');
       var arry = $firebaseArray(fb);
-      arry.$add({ comments: a, pid: _authDataReturned.uid }).then(function(data){
+      arry.$add({rId: x.id, comments: a, pid: _authDataReturned.uid }).then(function(data){
           console.log('Success, posted!');
       });
     };
