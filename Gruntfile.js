@@ -24,6 +24,7 @@ module.exports = function (grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
 
+
     // Project settings
     yeoman: appConfig,
 
@@ -40,13 +41,13 @@ module.exports = function (grunt) {
           livereload: '<%= connect.options.livereload %>'
         }
       },
+      css: {
+        files: 'sass/*.scss',
+        tasks: ['sass']
+      },
       jsTest: {
         files: ['test/spec/{,*/}*.js'],
         tasks: ['newer:jshint:test', 'karma']
-      },
-      styles: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
-        tasks: ['newer:copy:styles', 'autoprefixer']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -272,6 +273,7 @@ module.exports = function (grunt) {
     //   dist: {}
     // },
 
+
     imagemin: {
       dist: {
         files: [{
@@ -384,7 +386,15 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+    sass: {
+      dist: {
+        files: {
+          'app/styles/main.css' : 'sass/main.scss'
+        }
+      }
     }
+
   });
 
 
@@ -399,6 +409,7 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer:server',
       'connect:livereload',
+      'sass',
       'watch'
     ]);
   });
@@ -414,7 +425,9 @@ module.exports = function (grunt) {
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma'
+    'karma',
+    'sass'
+
   ]);
 
   grunt.registerTask('build', [
@@ -431,12 +444,15 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'sass'
+
   ]);
 
   grunt.registerTask('default', [
     'newer:jshint',
     'test',
-    'build'
+    'build',
+    'sass'
   ]);
 };

@@ -1,12 +1,18 @@
-@charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,500);
-body {
-  font-family: "Raleway", sans-serif;
-  background: linear-gradient(black, black);
-  -webkit-font-smoothing: antialiased;
-  /* Fix for webkit rendering */
+
+$font: 'Raleway', sans-serif;
+
+body{
+  font-family: $font;
+  background:
+  linear-gradient(
+      rgba(0, 0, 0, 1),
+      rgba(0, 0, 0, 1)
+  );
+  -webkit-font-smoothing: antialiased; /* Fix for webkit rendering */
   -webkit-text-size-adjust: 100%;
-  color: #fff; }
+  color: #fff;
+}
 
 video#bgvid {
   position: fixed;
@@ -18,109 +24,115 @@ video#bgvid {
   height: auto;
   z-index: -100;
   background-size: cover;
-  opacity: .6; }
+  opacity: .6;
 
-.ld1 {
+}
+
+.ld1{
   background: none;
   border: none;
   height: 100%;
   line-height: 50%;
   font-size: 3.0em;
-  width: 100%; }
+  width: 100%;
+}
+.ld1:hover{
+  color: #117700;
+}
 
-.ld1:hover {
-  color: #117700; }
-
-.ld2 {
+.ld2{
   background: none;
   border: none;
   height: 100%;
   line-height: 50%;
   font-size: 3.0em;
-  width: 100%; }
-
-.ld2:hover {
-  color: #ff0000; }
-
+  width: 100%;
+}
+.ld2:hover{
+  color: #ff0000;
+}
 .vcenter {
   display: inline-block;
   vertical-align: middle;
-  float: none; }
-
-.nav, .pagination, .carousel, .panel-title a {
-  cursor: pointer; }
-
-.midPage {
-  background-color: rgba(0, 0, 0, 0.5);
+  float: none;
+}
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+.midPage{
+  background-color: rgba(0,0,0,.5);
   padding-bottom: 10px;
-  border-radius: 5px; }
-
-.modalFont {
+  border-radius: 5px;
+}
+.modalFont{
   color: #121212;
-  font-family: "Raleway", sans-serif; }
+  font-family: $font;
 
-.modalPage {
+}
+.modalPage{
   overflow: scroll;
-  max-height: 85%; }
+  max-height:85%;
+}
+#mapholder img{
+  width: 100%;
 
-#mapholder img {
-  width: 100%; }
+}
 
 .angular-google-map-container {
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
-  left: 0; }
-
-.angular-google-map-container {
-  height: 400px; }
-
-.modalList li {
-  text-decoration: none; }
-
-.content {
+  left: 0;
+}
+.angular-google-map-container { height: 400px; }
+.modalList li{  text-decoration: none;  }
+.content{
   background-color: #1f1f1f;
   position: relative;
   height: 100%;
   bottom: 0;
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid #000; }
-
-.container {
+  border: 1px solid #000;
+}
+.container{
   position: relative;
   bottom: 0;
-  height: 100%; }
+  height: 100%;
+}
 
-.jumbotron {
+.jumbotron{
   background: none;
-  color: #fff; }
-
-.jumbotron input {
+  color: #fff;
+}
+.jumbotron input{
   border-radius: 5px;
   background: #FFFFFF;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
   -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
-  -webkit-box-shadow:  0px 0px 15px rgba(0, 0, 0, 0.22); }
+  -webkit-box-shadow:  0px 0px 15px rgba(0, 0, 0, 0.22);
+}
 
-.paddingRight {
-  padding-right: 10px; }
-
+.paddingRight{
+  padding-right: 10px;
+}
 #yelpImage {
-  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+  background:
+  linear-gradient(
+      rgba(0, 0, 0, 0.8),
+      rgba(0, 0, 0, 0.8)
+  );
   background-size: cover;
   width: 100%;
   height: 350px;
   float: left;
   filter: blur(5px);
-  z-index: -999; }
-
-.border span {
+  z-index: -999;
+}
+.border span{
   bottom: 5%;
   left: 5%;
   z-index: 1;
-  position: absolute;
+  position:absolute;
   background-color: black;
   color: #fff;
   display: inline;
@@ -130,12 +142,14 @@ video#bgvid {
   -o-filter: blur(0px);
   -ms-filter: blur(0px);
   filter: blur(0px);
-  font-family: "Raleway", sans-serif;
-  font-size: 18px; }
+  font-family: $font;
+  font-size: 18px;
+}
 
 .border {
   border: 8px solid #fff;
-  padding: 0; }
-
-#name {
-  font-size: 24px; }
+  padding: 0;
+}
+#name{
+  font-size: 24px;
+}

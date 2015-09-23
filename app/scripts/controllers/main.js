@@ -17,8 +17,6 @@ angular.module('fooderApp')
     var fb = new Firebase('https://coderr.firebaseio.com/users/' + _authDataReturned.uid);
     var obj = $firebaseObject(fb);
 
-
-
     fb.on("value", function(snapshot) {
       $scope.newPost = snapshot.val();
       if(!$scope.newPost['count']){
@@ -72,7 +70,6 @@ angular.module('fooderApp')
 
 
     NoGPS.getLocation(callBack);
-
 
     $scope.comment = function(x, a){
       var fb = new Firebase('https://coderr.firebaseio.com/comments/');
