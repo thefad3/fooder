@@ -1,7 +1,7 @@
 'use strict';
 
 function randomString(length, chars) {
-  var result = '';
+  var result = {};
   for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
   return result;
 
@@ -13,11 +13,12 @@ angular.module('fooderApp')
     $scope.userCount=0;
     $scope.id=[];
 
+
     var _authDataReturned = Auth.$getAuth();
     var fb = new Firebase('https://coderr.firebaseio.com/users/' + _authDataReturned.uid);
     var obj = $firebaseObject(fb);
 
-    fb.on("value", function(snapshot) {
+    fb.on('value', function(snapshot) {
       $scope.newPost = snapshot.val();
       if(!$scope.newPost['count']){
         $scope.newPost['count']=['0'];
@@ -36,6 +37,7 @@ angular.module('fooderApp')
     $scope.dbRead = $firebaseObject(Ref);
     $scope.authData = obj;
 
+
     if(_authDataReturned.length > 1){
       $location.path('/#/');
     }
@@ -44,6 +46,7 @@ angular.module('fooderApp')
       _authDataReturned.unauth();
       $location.path('/#/');
     };
+
     var callBack = function (location) {
       //Location data for when Page loads
       $scope.locationData = location.city + ',' + location.region;
@@ -71,12 +74,11 @@ angular.module('fooderApp')
 
     NoGPS.getLocation(callBack);
 
+
     $scope.comment = function(x, a){
       var fb = new Firebase('https://coderr.firebaseio.com/comments/');
       var arry = $firebaseArray(fb);
-      arry.$add({rId: x.id, comments: a, pid: _authDataReturned.uid }).then(function(data){
-          console.log('Success, posted!');
-      });
+      arry.$add({rId: x.id, comments: a, pid: _authDataReturned.uid }).then(function(data){});
     };
 
     $scope.like = function(index){
@@ -131,6 +133,7 @@ angular.module('fooderApp')
         }).then(function(userData) {
           var usersRef = Ref.child("/users/"+userData.uid);
           usersRef.set(userData);
+          $scope.successSignUp = 'You have Registered, login to the right';
           var countKarmaSet = Ref.child("/users/"+userData.uid+"/count/"+$scope.userCount);
           countKarmaSet.set(userData.uid);
         })
@@ -143,11 +146,10 @@ angular.module('fooderApp')
       }).then(function(authData) {
         $scope.authData = authData;
         $scope.auth = true;
-        var usersRef = Ref.child("/users/"+authData.uid);
-        usersRef.set(authData);
         $location.path( "/account");
       }).catch(function(error) {
         $scope.auth = false;
+        $scope.errorLogin = 'There was a problem with your email or password.';
         console.error("Authentication failed:", error);
       });
     };
@@ -176,3 +178,13 @@ angular.module('fooderApp')
       }
     }
   })
+  .directive('notification', function ($timeout) {
+    return {
+      restrict: 'E',
+      template:"<div class='alert alert-dismissible alert-{{alertData.type}}' ng-show='alertData.message' role='alert' data-notification='{{alertData.status}}'>{{alertData.message}}<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>",
+      scope:{
+        alertData:"="
+      },
+      replace:true
+    };
+  });

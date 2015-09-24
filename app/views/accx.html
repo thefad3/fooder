@@ -1,11 +1,9 @@
 <div ng-controller="authPage">
 
-  <nav class="navbar navbar-inverse">
-    <ul class="nav navbar-nav">
-      <li><a href="/#/">foodeR</a></li>
-    </ul>
-    <div class="navbar-form navbar-right" ng-show="authData.uid">
-      <div class="input-group paddingRight">
+  <nav class="navbar navbar">
+    <a class="navbar-brand" href="/#/account">foodeR</a>
+    <div class="navbar-form navbar-left" ng-show="authData.uid">
+      <div class="input-group">
         <span class="input-group-addon" id="sizing-addon1">Search:</span>
         <input type="text" class="form-control" aria-describedby="sizing-addon1" ng-model="term" required>
             <span class="input-group-btn">
@@ -13,21 +11,25 @@
           </span>
       </div>
     </div>
-  </nav>
 
-  <div class="row">
-    <div class="col-md-8">
-      <h3>Welcome back {{authData.password.email}}  <small> <a href="/#/" ng-click="logout">Logout</a> </small></h3>
-    </div>
-    <div class="col-md-4">
-      <h3 class="text-right">Total Swipes: {{userCount}}</h3>
-    </div>
-  </div>
+
+
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/#/account"><b>Likes: {{userCount}}</b></a></li>
+        <li class="dropdown">
+          <a href="/#/account" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><b>{{authData.password.email}} <span class="caret"></span></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/#/" ng-click="logout()">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </nav>
 
 
   <div class="content">
-    <p></p>
-
     <div class="row" ng-repeat="x in viewData track by $index" ng-if="business_index == $index">
       <div class="modal fade modalFont" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         {{id[$index] === x.id}}
@@ -37,38 +39,42 @@
 
 
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
               <h3 class="modal-title">{{x.name}}</h3>
             </div>
 
             <div class="modal-body">
               <div class="row">
-                  <div class="col-md-4">
-                    <address>
-                      <strong>{{x.name}}</strong><br>
-                      {{x.location.display_address[0]}}<br>
-                      {{x.location.display_address[2]}}<br>
-                      <h4><abbr title="Phone">P:</abbr> {{x.display_phone}}</h4>
-                    </address>
-                    <img src="{{x.rating_img_url_large}}">
-                    </div>
-                  <div class="col-md-8">
-                    <blockquote>
-                        <h5>Recent Yelp Review:</h5>
-                        " {{x.snippet_text}} "
-                      </blockquote>
-                  </div>
+                <div class="col-md-4">
+                  <address>
+                    <strong>{{x.name}}</strong><br>
+                    {{x.location.display_address[0]}}<br>
+                    {{x.location.display_address[2]}}<br>
+                    <h4><abbr title="Phone">P:</abbr> {{x.display_phone}}</h4>
+                  </address>
+                  <img src="{{x.rating_img_url_large}}">
                 </div>
+                <div class="col-md-8">
+                  <blockquote>
+                    <h5>Recent Yelp Review:</h5>
+                    " {{x.snippet_text}} "
+                  </blockquote>
+                </div>
+              </div>
               <div class="row">
-                  <div class="col-md-12">
-                  <p><div id="mapholder" class="img-thumbnail"></div></p>
-                  </div>
+                <div class="col-md-12">
+                  <p>
+
+                  <div id="mapholder" class="img-thumbnail"></div>
+                  </p>
+                </div>
               </div>
 
               <div class="row">
                 <div class="col-md-12">
                   <h3>Categories</h3>
-                  <h5>{{x.categories[0][0]}} ,  {{x.categories[1][0]}} ,  {{x.categories[2][0]}} </h5>
+                  <h5>{{x.categories[0][0]}} , {{x.categories[1][0]}} , {{x.categories[2][0]}} </h5>
                 </div>
               </div>
 
@@ -82,23 +88,32 @@
 
         </div>
       </div>
-        <div class="col-md-6">
-              <blockquote>
-                <h5>Recent foodeR User Comments:</h5>
-                <div ng-if="viewData.comments.rId == x.id">
-                " {{viewData.comments.comments}} "
-                  </div>
-              </blockquote>
-
-
-
-              <label>Write Review:</label>
-              <p><textarea class="form-control" ng-model="reviewComments" rows="2"></textarea></p>
-
-              <p><button type="button" ng-click="comment(x, reviewComments)" class="btn btn-success">Save changes</button></p>
+      <div class="col-md-5">
+        <notification alert-data="notification"></notification>
+        <h4>Latest foodeR Reviews:</h4>
+        <hr>
+        <blockquote>
+          <div ng-show="!viewData.comments.comments" ng-hide="viewData.comments.comments.length > 2">Oops, there's no
+            reviews! Write one below!
           </div>
+          <div ng-if="viewData.comments.rId == x.id">
+            " {{viewData.comments.comments}} "
+          </div>
+        </blockquote>
+        <h4>Write Review:</h4>
+        <hr>
+        <p><textarea class="form-control" ng-model="reviewComments" rows="6" maxlength="150"></textarea></p>
 
-        <div class="col-md-6 border"  ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
+        <p>
+          <button type="button"
+                  ng-click="comment(x, reviewComments); notification.status = 'hide'; notification.message = 'Thanks for the review!'; notification.type = 'info';"
+                  class="btn btn-success">Save Review!
+          </button>
+        </p>
+      </div>
+
+      <div class="col-md-7" ng-swipe-left="like($index)" ng-swipe-right="dislike($index)">
+        <div class="border">
           <span>
             <div class="col-md-8">
               <h4 id="name">{{x.name}}</h4>
@@ -106,13 +121,18 @@
               <h4>{{x.display_phone}}</h4>
             </div>
             <div class="col-md-4">
-              <button type="button" ng-click="like(x.id)" class="img-thumbnail ld1"><i class="glyphicon glyphicon-thumbs-up"></i></button>
-              <button type="button" ng-click="dislike(x.id)" class="img-thumbnail ld2"><i class="glyphicon glyphicon-thumbs-down"></i></button>
+              <button type="button" ng-click="like(x.id)" class="img-thumbnail ld1"><i
+                class="glyphicon glyphicon-thumbs-up"></i></button>
+              <button type="button" ng-click="dislike(x.id)" class="img-thumbnail ld2"><i
+                class="glyphicon glyphicon-thumbs-down"></i></button>
             </div>
           </span>
-          <div id="yelpImage" data-toggle="modal" data-target="#myModal" ng-click="showPosition(x.location.coordinate)" style="background-image: url({{x.image_url}});"></div>
+
+          <div id="yelpImage" data-toggle="modal" data-target="#myModal" ng-click="showPosition(x.location.coordinate)"
+               style="background-image: url({{x.image_url}});"></div>
         </div>
+      </div>
 
 
-</div>
-</div>
+    </div>
+  </div>

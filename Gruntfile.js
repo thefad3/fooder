@@ -426,8 +426,8 @@ module.exports = function (grunt) {
     'autoprefixer',
     'connect:test',
     'karma',
-    'sass'
-
+    'sass',
+    'watch'
   ]);
 
   grunt.registerTask('build', [
@@ -445,14 +445,15 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin',
-    'sass'
-
+    'sass',
+    'watch'
   ]);
 
   grunt.registerTask('default', [
     'newer:jshint',
     'test',
     'build',
-    'sass'
+    'sass',
+    'watch'
   ]);
 };

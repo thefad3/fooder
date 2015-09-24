@@ -1,4 +1,3 @@
-
 <div ng-controller="MainCtrl">
   <video autoplay="autoplay" loop="loop" muted id="bgvid">
     <source src="images/videoplayback.mp4" type="video/mp4">
@@ -10,6 +9,7 @@
     <hr>
     <div class="row midPage">
     <div ng-hide="authData.uid" class="col-md-6">
+      <div class="alert alert-danger" role="alert" ng-show="successSignUp">{{successSignUp}}</div>
       <h3>Sign Up!</h3>
       <div class="form-group">
         <div class="input-group">
@@ -28,6 +28,7 @@
 
     <div ng-hide="authData.uid" class="col-md-6">
       <h3>Login!</h3>
+      <div class="alert alert-danger" role="alert" ng-show="errorLogin">{{errorLogin}}</div>
       <div class="form-group">
         <div class="input-group">
           <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
@@ -43,4 +44,21 @@
       <button type="button" class="btn btn-success" ng-click="login()"><i class="glyphicon glyphicon-thumbs-up"></i>  Log In</button>
     </div>
   </div>
+
+    <div class="row homeRow">
+      <div class="col-md-4 ">
+        <p class="center"><i class="glyphicon glyphicon-glass text-center"></i></p>
+      </div>
+      <div class="col-md-4">
+        <p class="center"><i class="glyphicon glyphicon-user"></i></p>
+      </div>
+      <div class="col-md-4">
+        <p class="center"><i class="glyphicon glyphicon-record text-center"></i></p>
+        <div>
+          With a push of a button easily find your location and places around you!
+          Restruants, convience stores, businesses and more!
+
+        </div>
+      </div>
+      </div>
 </div>
