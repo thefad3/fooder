@@ -1,9 +1,8 @@
-/**
- * Created by chrislynch on 9/20/15.
- */
+'use strict';
 
-  $('#myModal').on('shown.bs.modal', function () {
-    $('#myInput').focus()
-  });
+
+$('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').focus();
+});
 
 

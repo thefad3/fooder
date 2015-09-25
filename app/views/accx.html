@@ -1,6 +1,6 @@
 <div ng-controller="authPage">
 
-  <nav class="navbar navbar">
+  <nav class="navbar navbar-default navbar-fixed-top">
     <a class="navbar-brand" href="/#/account">foodeR</a>
     <div class="navbar-form navbar-left" ng-show="authData.uid">
       <div class="input-group">
@@ -11,9 +11,6 @@
           </span>
       </div>
     </div>
-
-
-
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
@@ -30,7 +27,7 @@
 
 
   <div class="content">
-    <div class="row" ng-repeat="x in viewData track by $index" ng-if="business_index == $index">
+    <div class="row" ng-repeat="x in viewData track by $index" ng-if="businessIndex == $index">
       <div class="modal fade modalFont" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         {{id[$index] === x.id}}
         <div class="modal-dialog" role="document">
@@ -93,7 +90,7 @@
         <h4>Latest foodeR Reviews:</h4>
         <hr>
         <blockquote>
-          <div ng-show="!viewData.comments.comments" ng-hide="viewData.comments.comments.length > 2">Oops, there's no
+          <div ng-hide="viewData.comments.comments.length > 1" ng-show="viewData.comments.comments.length > 2">Oops, there's no
             reviews! Write one below!
           </div>
           <div ng-if="viewData.comments.rId == x.id">
@@ -136,3 +133,7 @@
 
     </div>
   </div>
+  <div class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+      <p class="navbar-text pull-left">© 2015 - Chris Lynch - Wicked Media</p>
+    </div>

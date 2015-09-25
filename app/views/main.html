@@ -9,7 +9,7 @@
     <hr>
     <div class="row midPage">
     <div ng-hide="authData.uid" class="col-md-6">
-      <div class="alert alert-danger" role="alert" ng-show="successSignUp">{{successSignUp}}</div>
+      <p><notification alert-data="notification"></notification></p>
       <h3>Sign Up!</h3>
       <div class="form-group">
         <div class="input-group">
@@ -23,7 +23,9 @@
           <input type="password" class="form-control" placeholder="Password" ng-model="register.password" />
         </div>
       </div>
-      <button type="button" class="btn btn-success" ng-click="signup()"><i class="glyphicon glyphicon-heart-empty"></i>  Sign Up</button>
+      <button type="button" class="btn btn-success"
+              ng-click="signup(); notification.status = 'hide'; notification.message = 'Thats it! now Login!'; notification.type = 'info';"><i class="glyphicon glyphicon-heart-empty"></i> Sign Up
+      </button>
     </div>
 
     <div ng-hide="authData.uid" class="col-md-6">
@@ -46,19 +48,36 @@
   </div>
 
     <div class="row homeRow">
-      <div class="col-md-4 ">
+      <div class="col-md-4">
+
         <p class="center"><i class="glyphicon glyphicon-glass text-center"></i></p>
+        <h3 class="text-center">Find Businesses</h3>
+        <hr>
+        <div class="textHome">
+          When you sign up for foodeR you can search for a specific type of food or restaurants and businesses!
+        </div>
       </div>
       <div class="col-md-4">
         <p class="center"><i class="glyphicon glyphicon-user"></i></p>
+        <h3 class="text-center">Find Businesses</h3>
+        <hr>
+        <div class="textHome">
+          Sign up and see what others have posted about restaurants in your area! Post your own reviews and Like or Dislike the restaurants in your area!
+        </div>
       </div>
       <div class="col-md-4">
         <p class="center"><i class="glyphicon glyphicon-record text-center"></i></p>
-        <div>
-          With a push of a button easily find your location and places around you!
-          Restruants, convience stores, businesses and more!
-
+        <h3 class="text-center">Find Businesses</h3>
+        <hr>
+        <div class="textHome">
+          With one click we grab where you are and recommend the best places near you!
+          Restaurants, convenience stores, businesses and more!
         </div>
+
       </div>
       </div>
 </div>
+  <div class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+      <p class="navbar-text pull-left">© 2015 - Chris Lynch - Wicked Media</p>
+    </div>

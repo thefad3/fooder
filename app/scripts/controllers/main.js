@@ -7,7 +7,7 @@ function randomString(length, chars) {
 
 }
 angular.module('fooderApp')
-  .controller('authPage', function($scope,$firebaseArray, Auth, $http, Ref, $firebaseObject, $timeout, $location, Yelp){
+  .controller('authPage', function($scope,$firebaseArray, Auth, $http, Ref, $firebaseObject, $location, Yelp){
 
     $scope.callbBackId=0;
     $scope.userCount=0;
@@ -16,26 +16,25 @@ angular.module('fooderApp')
 
     var _authDataReturned = Auth.$getAuth();
     var fb = new Firebase('https://coderr.firebaseio.com/users/' + _authDataReturned.uid);
-    var obj = $firebaseObject(fb);
 
     fb.on('value', function(snapshot) {
       $scope.newPost = snapshot.val();
-      if(!$scope.newPost['count']){
-        $scope.newPost['count']=['0'];
+      if(!$scope.newPost.count){
+        $scope.newPost.count=['0'];
       }
-      if($scope.newPost['count'].length < $scope.userCount) {
+      if($scope.newPost.count.length < $scope.userCount) {
         $scope.userCount=0;
       }else{
-        $scope.userCount = $scope.newPost['count'].length-1;
+        $scope.userCount = $scope.newPost.count.length-1;
       }
-      angular.forEach($scope.newPost.like, function(key, value){
+      angular.forEach($scope.newPost.like, function(key){
         $scope.id.push(key);
-      })
+      });
     });
 
-    $scope.business_index=0;
+    $scope.businessIndex=0;
     $scope.dbRead = $firebaseObject(Ref);
-    $scope.authData = obj;
+    $scope.authData = _authDataReturned;
 
 
     if(_authDataReturned.length > 1){
@@ -52,10 +51,9 @@ angular.module('fooderApp')
       $scope.locationData = location.city + ',' + location.region;
       //Google maps location generator and map generator
       $scope.showPosition = function(position) {
-        var latlon = position.latitude + "," + position.longitude;
-        var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
-          +latlon+"&zoom=14&size=900x350&sensor=false&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C"+latlon;
-        document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
+        var latlon = position.latitude + ',' + position.longitude;
+        var imgUrl = 'https://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=14&size=900x350&sensor=false&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C'+latlon;
+        document.getElementById('mapholder').innerHTML = '<img src="'+imgUrl+'">';
       };
       var _searchLoad = {
         location: $scope.locationData,
@@ -78,33 +76,33 @@ angular.module('fooderApp')
     $scope.comment = function(x, a){
       var fb = new Firebase('https://coderr.firebaseio.com/comments/');
       var arry = $firebaseArray(fb);
-      arry.$add({rId: x.id, comments: a, pid: _authDataReturned.uid }).then(function(data){});
+      arry.$add({rId: x.id, comments: a, pid: _authDataReturned.uid }).then(function(){});
     };
 
     $scope.like = function(index){
       $scope.userCount++;
-      var countKarma = Ref.child("/users/"+_authDataReturned.uid+"/count/"+$scope.userCount);
+      var countKarma = Ref.child('/users/'+_authDataReturned.uid+'/count/'+$scope.userCount);
       countKarma.set(_authDataReturned.uid);
-      var _like = Ref.child("/users/"+_authDataReturned.uid+"/like/");
+      var _like = Ref.child('/users/'+_authDataReturned.uid+'/like/');
       _like.push(index);
       $scope.next();
     };
 
     $scope.dislike = function(index){
       $scope.userCount++;
-      var countKarma = Ref.child("/users/"+_authDataReturned.uid+"/count/"+$scope.userCount);
+      var countKarma = Ref.child('/users/'+_authDataReturned.uid+'/count/'+$scope.userCount);
       countKarma.set(_authDataReturned.uid);
-      var _dislike = Ref.child("/users/"+_authDataReturned.uid+"/dislike/");
+      var _dislike = Ref.child('/users/'+_authDataReturned.uid+'/dislike/');
       _dislike.push(index);
       $scope.next();
     };
 
 
     $scope.next = function(){
-      if($scope.business_index >= $scope.viewData.length -1){
-        $scope.business_index=0;
+      if($scope.businessIndex >= $scope.viewData.length -1){
+        $scope.businessIndex=0;
       }else{
-        $scope.business_index ++;
+        $scope.businessIndex ++;
       }
     };
 
@@ -119,6 +117,10 @@ angular.module('fooderApp')
       };
       Yelp.yelpSearch(_search, function(data){
         $scope.viewData = data.businesses;
+        var chat = new Firebase('https://coderr.firebaseio.com/comments/');
+        chat.on('child_added', function (snapshot) {
+          $scope.viewData.comments = snapshot.val();
+        });
       });
 
     };
@@ -131,12 +133,12 @@ angular.module('fooderApp')
           email: $scope.register.email,
           password: $scope.register.password
         }).then(function(userData) {
-          var usersRef = Ref.child("/users/"+userData.uid);
+          var usersRef = Ref.child('/users/'+userData.uid);
           usersRef.set(userData);
-          $scope.successSignUp = 'You have Registered, login to the right';
-          var countKarmaSet = Ref.child("/users/"+userData.uid+"/count/"+$scope.userCount);
+          var _count = 0;
+          var countKarmaSet = Ref.child('/users/'+userData.uid+'/count/'+_count);
           countKarmaSet.set(userData.uid);
-        })
+        });
       };
 
     $scope.login = function(){
@@ -146,18 +148,18 @@ angular.module('fooderApp')
       }).then(function(authData) {
         $scope.authData = authData;
         $scope.auth = true;
-        $location.path( "/account");
+        $location.path( '/account');
       }).catch(function(error) {
         $scope.auth = false;
         $scope.errorLogin = 'There was a problem with your email or password.';
-        console.error("Authentication failed:", error);
+        console.error('Authentication failed:', error);
       });
     };
 
   })
-  .factory("Yelp", function($http) {
+  .factory('Yelp', function($http) {
     return {
-      "yelpSearch": function (name, callback) {
+      'yelpSearch': function (name, callback) {
         var method = 'GET',
           url = 'https://api.yelp.com/v2/search/',
           params = {
@@ -165,7 +167,7 @@ angular.module('fooderApp')
             location: name.location,
             oauth_consumer_key: '44dGAgblwMC4eiapEgv2Eg',
             oauth_token: 'a85eWTlMIhs34Ehs-z9ZmPxrbrVPAMnv',
-            oauth_signature_method: "HMAC-SHA1",
+            oauth_signature_method: 'HMAC-SHA1',
             oauth_timestamp: new Date().getTime(),
             oauth_nonce: randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzA'),
             term: name.term
@@ -173,17 +175,17 @@ angular.module('fooderApp')
          consumerSecret = '7cLJ2tyXnPmdvWDakkcyRTs4qYY',
           tokenSecret = '9qxs-Xd-d11WrjGd_96yQB-raQY',
           signature = oauthSignature.generate(method, url, params, consumerSecret, tokenSecret, {encodeSignature: false});
-        params['oauth_signature'] = signature;
+        params.oauth_signature = signature;
         $http.jsonp(url, {params: params}).success(callback);
       }
-    }
+    };
   })
-  .directive('notification', function ($timeout) {
+  .directive('notification', function () {
     return {
       restrict: 'E',
-      template:"<div class='alert alert-dismissible alert-{{alertData.type}}' ng-show='alertData.message' role='alert' data-notification='{{alertData.status}}'>{{alertData.message}}<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>",
+      template:'<div class="alert alert-dismissible alert-{{alertData.type}}" ng-show="alertData.message" role="alert" data-notification="{{alertData.status}}">{{alertData.message}}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>',
       scope:{
-        alertData:"="
+        alertData:'='
       },
       replace:true
     };
