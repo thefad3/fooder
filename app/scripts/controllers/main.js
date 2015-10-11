@@ -46,21 +46,23 @@ angular.module('fooderApp')
       $location.path('/#/');
     };
 
+
+
     var callBack = function (location) {
       //Location data for when Page loads
-      $scope.locationData = location.city + ',' + location.region;
       //Google maps location generator and map generator
-      $scope.showPosition = function(position) {
-        var latlon = position.latitude + ',' + position.longitude;
+      $scope.showPosition = function() {
+        var latlon = $scope._searchLoad.location;
         var imgUrl = 'https://maps.googleapis.com/maps/api/staticmap?center='+latlon+'&zoom=14&size=900x350&sensor=false&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:1%7C'+latlon;
         document.getElementById('mapholder').innerHTML = '<img src="'+imgUrl+'">';
       };
-      var _searchLoad = {
-        location: $scope.locationData,
+      $scope._searchLoad = {
+        location: location.coords.latitude + ',' + location.coords.longitude,
+        accuracy: location.coords.accuracy,
         term: 'food',
         callbackId: 0
       };
-      Yelp.yelpSearch(_searchLoad, function(data){
+      Yelp.yelpSearch($scope._searchLoad, function(data){
         $scope.viewData = data.businesses;
         var chat = new Firebase('https://coderr.firebaseio.com/comments/');
         chat.on('child_added', function (snapshot) {
@@ -69,8 +71,7 @@ angular.module('fooderApp')
       });
     };
 
-
-    NoGPS.getLocation(callBack);
+    navigator.geolocation.getCurrentPosition(callBack);
 
 
     $scope.comment = function(x, a){
@@ -111,7 +112,8 @@ angular.module('fooderApp')
       $scope.viewData=[];
       $scope.callbBackId++;
       var _search = {
-        location: $scope.locationData,
+        location: $scope._searchLoad.location,
+        accuracy: $scope._searchLoad.accuracy,
         term: $scope.term,
         callbackId: $scope.callbBackId
       };
@@ -164,7 +166,7 @@ angular.module('fooderApp')
           url = 'https://api.yelp.com/v2/search/',
           params = {
             callback: 'angular.callbacks._'+name.callbackId,
-            location: name.location,
+            ll: name.location +','+ name.accuracy,
             oauth_consumer_key: '44dGAgblwMC4eiapEgv2Eg',
             oauth_token: 'a85eWTlMIhs34Ehs-z9ZmPxrbrVPAMnv',
             oauth_signature_method: 'HMAC-SHA1',
